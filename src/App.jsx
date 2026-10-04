@@ -1,20 +1,50 @@
 import { useState } from "react";
 
 function App() {
+  // =========================
+  // TASK STATE
+  // =========================
+
   const [tasks, setTasks] = useState([
-    "Review React fundamentals",
-    "Finish Data Analytics activity",
-    "Study JavaScript",
+    {
+      id: 1,
+      text: "Review React fundamentals",
+      completed: false,
+    },
+    {
+      id: 2,
+      text: "Finish Data Analytics activity",
+      completed: false,
+    },
+    {
+      id: 3,
+      text: "Study JavaScript",
+      completed: false,
+    },
   ]);
 
   const [newTask, setNewTask] = useState("");
 
+  // =========================
+  // ADD TASK
+  // =========================
+
   const addTask = () => {
     if (newTask.trim() === "") return;
 
-    setTasks([...tasks, newTask.trim()]);
+    const newTaskItem = {
+      id: Date.now(),
+      text: newTask.trim(),
+      completed: false,
+    };
+
+    setTasks([...tasks, newTaskItem]);
     setNewTask("");
   };
+
+  // =========================
+  // ENTER KEY
+  // =========================
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
@@ -22,10 +52,36 @@ function App() {
     }
   };
 
+  // =========================
+  // COMPLETE / UNCOMPLETE TASK
+  // =========================
+
+  const toggleTask = (id) => {
+    setTasks(
+      tasks.map((task) =>
+        task.id === id
+          ? {
+              ...task,
+              completed: !task.completed,
+            }
+          : task
+      )
+    );
+  };
+
+  // =========================
+  // DELETE TASK
+  // =========================
+
+  const deleteTask = (id) => {
+    setTasks(tasks.filter((task) => task.id !== id));
+  };
+
   return (
-    <div className="app">
+    <div className="min-h-screen bg-white text-gray-900">
 
       {/* ==================== NAVBAR ==================== */}
+
       <nav className="flex items-center justify-between border-b border-gray-200 bg-white px-8 py-5">
         <div className="text-2xl font-bold text-blue-600">
           StudyFlow
@@ -57,6 +113,7 @@ function App() {
 
 
       {/* ==================== HERO ==================== */}
+
       <section
         id="dashboard"
         className="bg-gray-50 px-8 py-20 text-center"
@@ -86,6 +143,7 @@ function App() {
 
 
       {/* ==================== SUBJECTS ==================== */}
+
       <section
         id="subjects"
         className="bg-white px-8 py-20"
@@ -159,69 +217,125 @@ function App() {
       </section>
 
 
-     {/* ==================== TASKS ==================== */}
-<section
-  id="tasks"
-  className="bg-gray-50 px-8 py-20"
->
-  <div className="mx-auto max-w-4xl">
+      {/* ==================== TASKS ==================== */}
 
-    {/* Section Heading */}
-    <div className="mb-10">
-      <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-blue-600">
-        My Tasks
-      </p>
+      <section
+        id="tasks"
+        className="bg-gray-50 px-8 py-20"
+      >
+        <div className="mx-auto max-w-4xl">
 
-      <h2 className="text-3xl font-bold text-gray-900">
-        Study Checklist
-      </h2>
-    </div>
+          {/* Task Heading */}
+          <div className="mb-10 flex items-end justify-between">
 
+            <div>
+              <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-blue-600">
+                My Tasks
+              </p>
 
-        {/* Add Task */}
-        <div className="mb-8 flex flex-col gap-3 sm:flex-row">
-          <input
-            type="text"
-            placeholder="Add a new task..."
-            value={newTask}
-            onChange={(event) => setNewTask(event.target.value)}
-            onKeyDown={handleKeyDown}
-            className="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
-          />
-
-          <button
-            onClick={addTask}
-            className="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700"
-          >
-            Add Task
-          </button>
-        </div>
-
-
-        {/* Task List */}
-        <div className="space-y-3">
-          {tasks.map((task, index) => (
-            <div
-              className="flex items-center rounded-xl border border-gray-200 bg-white px-5 py-4 shadow-sm transition hover:shadow-md"
-              key={index}
-            >
-              <span className="text-gray-700">
-                {task}
-              </span>
+              <h2 className="text-3xl font-bold text-gray-900">
+                Study Checklist
+              </h2>
             </div>
-          ))}
+
+            <span className="text-sm text-gray-500">
+              {tasks.length} {tasks.length === 1 ? "task" : "tasks"}
+            </span>
+
+          </div>
+
+
+          {/* Add Task */}
+          <div className="mb-8 flex flex-col gap-3 sm:flex-row">
+
+            <input
+              type="text"
+              placeholder="Add a new task..."
+              value={newTask}
+              onChange={(event) => setNewTask(event.target.value)}
+              onKeyDown={handleKeyDown}
+              className="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+            />
+
+            <button
+              onClick={addTask}
+              className="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700"
+            >
+              Add Task
+            </button>
+
+          </div>
+
+
+          {/* Task List */}
+          <div className="space-y-3">
+
+            {tasks.map((task) => (
+
+              <div
+                key={task.id}
+                className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-5 py-4 shadow-sm transition hover:shadow-md"
+              >
+
+                {/* Complete Task */}
+                <button
+                  onClick={() => toggleTask(task.id)}
+                  className="flex items-center gap-3 text-left"
+                >
+
+                  <span
+                    className={`flex h-6 w-6 items-center justify-center rounded-full border-2 text-sm font-bold transition ${
+                      task.completed
+                        ? "border-blue-600 bg-blue-600 text-white"
+                        : "border-gray-300 text-transparent hover:border-blue-500"
+                    }`}
+                  >
+                    ✓
+                  </span>
+
+                  <span
+                    className={`transition ${
+                      task.completed
+                        ? "text-gray-400 line-through"
+                        : "text-gray-700"
+                    }`}
+                  >
+                    {task.text}
+                  </span>
+
+                </button>
+
+
+                {/* Delete Task */}
+                <button
+                  onClick={() => deleteTask(task.id)}
+                  className="text-sm font-medium text-red-500 transition hover:text-red-700"
+                >
+                  Delete
+                </button>
+
+              </div>
+
+            ))}
+
+          </div>
+
         </div>
-
-      </div>
-    </section>
+      </section>
 
 
-          <footer className="border-t border-gray-200 bg-white px-8 py-8 text-center">
+      {/* ==================== FOOTER ==================== */}
+
+      <footer className="border-t border-gray-200 bg-white px-8 py-8 text-center">
+
         <p className="font-semibold text-gray-900">
           StudyFlow © 2026
         </p>
 
-        
+        <p className="mt-2 text-sm text-gray-500">
+          Built with React.js + Tailwind CSS
+        </p>
+
       </footer>
 
     </div>
