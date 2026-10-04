@@ -26,6 +26,23 @@ function App() {
   const [newTask, setNewTask] = useState("");
 
   // =========================
+  // STUDY PROGRESS
+  // =========================
+
+  const completedTasks = tasks.filter(
+    (task) => task.completed
+  ).length;
+
+  const totalTasks = tasks.length;
+
+  const remainingTasks = totalTasks - completedTasks;
+
+  const progressPercentage =
+    totalTasks === 0
+      ? 0
+      : Math.round((completedTasks / totalTasks) * 100);
+
+  // =========================
   // ADD TASK
   // =========================
 
@@ -74,7 +91,9 @@ function App() {
   // =========================
 
   const deleteTask = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id));
+    setTasks(
+      tasks.filter((task) => task.id !== id)
+    );
   };
 
   return (
@@ -139,6 +158,91 @@ function App() {
         >
           View My Tasks
         </a>
+
+
+        {/* ==================== STUDY PROGRESS ==================== */}
+
+        <div className="mx-auto mt-12 max-w-4xl rounded-2xl border border-gray-200 bg-white p-6 text-left shadow-sm">
+
+          <div className="flex items-center justify-between">
+
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-widest text-blue-600">
+                Study Progress
+              </p>
+
+              <h2 className="mt-2 text-2xl font-bold text-gray-900">
+                Keep going!
+              </h2>
+            </div>
+
+            <span className="text-3xl font-bold text-blue-600">
+              {progressPercentage}%
+            </span>
+
+          </div>
+
+
+          {/* Progress Bar */}
+
+          <div className="mt-6 h-3 overflow-hidden rounded-full bg-gray-200">
+
+            <div
+              className="h-full rounded-full bg-blue-600 transition-all duration-500"
+              style={{
+                width: `${progressPercentage}%`,
+              }}
+            />
+
+          </div>
+
+
+          {/* Progress Statistics */}
+
+          <div className="mt-4 grid grid-cols-3 gap-4 text-center">
+
+            {/* Total Tasks */}
+
+            <div>
+              <p className="text-2xl font-bold text-gray-900">
+                {totalTasks}
+              </p>
+
+              <p className="text-sm text-gray-500">
+                Total Tasks
+              </p>
+            </div>
+
+
+            {/* Completed */}
+
+            <div>
+              <p className="text-2xl font-bold text-green-600">
+                {completedTasks}
+              </p>
+
+              <p className="text-sm text-gray-500">
+                Completed
+              </p>
+            </div>
+
+
+            {/* Remaining */}
+
+            <div>
+              <p className="text-2xl font-bold text-orange-500">
+                {remainingTasks}
+              </p>
+
+              <p className="text-sm text-gray-500">
+                Remaining
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
       </section>
 
 
@@ -151,6 +255,7 @@ function App() {
         <div className="mx-auto max-w-6xl">
 
           <div className="mb-12">
+
             <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-blue-600">
               My Subjects
             </p>
@@ -158,13 +263,16 @@ function App() {
             <h2 className="text-3xl font-bold text-gray-900">
               Current Subjects
             </h2>
+
           </div>
 
 
           <div className="grid gap-6 md:grid-cols-3">
 
             {/* React Development */}
+
             <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+
               <span className="text-sm font-bold text-blue-600">
                 01
               </span>
@@ -177,11 +285,14 @@ function App() {
                 Learn components, JSX, props, state, and modern frontend
                 development.
               </p>
+
             </div>
 
 
             {/* Data Analytics */}
+
             <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+
               <span className="text-sm font-bold text-blue-600">
                 02
               </span>
@@ -193,11 +304,14 @@ function App() {
               <p className="mt-3 leading-relaxed text-gray-600">
                 Explore data cleaning, analysis, visualization, and statistics.
               </p>
+
             </div>
 
 
             {/* Cybersecurity */}
+
             <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+
               <span className="text-sm font-bold text-blue-600">
                 03
               </span>
@@ -210,9 +324,11 @@ function App() {
                 Understand cybersecurity concepts, threats, protection, and
                 security practices.
               </p>
+
             </div>
 
           </div>
+
         </div>
       </section>
 
@@ -226,9 +342,11 @@ function App() {
         <div className="mx-auto max-w-4xl">
 
           {/* Task Heading */}
+
           <div className="mb-10 flex items-end justify-between">
 
             <div>
+
               <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-blue-600">
                 My Tasks
               </p>
@@ -236,23 +354,28 @@ function App() {
               <h2 className="text-3xl font-bold text-gray-900">
                 Study Checklist
               </h2>
+
             </div>
 
             <span className="text-sm text-gray-500">
-              {tasks.length} {tasks.length === 1 ? "task" : "tasks"}
+              {tasks.length}{" "}
+              {tasks.length === 1 ? "task" : "tasks"}
             </span>
 
           </div>
 
 
           {/* Add Task */}
+
           <div className="mb-8 flex flex-col gap-3 sm:flex-row">
 
             <input
               type="text"
               placeholder="Add a new task..."
               value={newTask}
-              onChange={(event) => setNewTask(event.target.value)}
+              onChange={(event) =>
+                setNewTask(event.target.value)
+              }
               onKeyDown={handleKeyDown}
               className="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
             />
@@ -268,6 +391,7 @@ function App() {
 
 
           {/* Task List */}
+
           <div className="space-y-3">
 
             {tasks.map((task) => (
@@ -278,6 +402,7 @@ function App() {
               >
 
                 {/* Complete Task */}
+
                 <button
                   onClick={() => toggleTask(task.id)}
                   className="flex items-center gap-3 text-left"
@@ -307,6 +432,7 @@ function App() {
 
 
                 {/* Delete Task */}
+
                 <button
                   onClick={() => deleteTask(task.id)}
                   className="text-sm font-medium text-red-500 transition hover:text-red-700"
