@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "./App.css";
 
 function App() {
   const [tasks, setTasks] = useState([
@@ -10,143 +9,219 @@ function App() {
 
   const [newTask, setNewTask] = useState("");
 
-  function addTask() {
+  const addTask = () => {
     if (newTask.trim() === "") return;
 
-    setTasks([...tasks, newTask]);
+    setTasks([...tasks, newTask.trim()]);
     setNewTask("");
-  }
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      addTask();
+    }
+  };
 
   return (
     <div className="app">
 
-      <nav className="navbar">
-        <h2>StudyFlow</h2>
+      {/* ==================== NAVBAR ==================== */}
+      <nav className="flex items-center justify-between border-b border-gray-200 bg-white px-8 py-5">
+        <div className="text-2xl font-bold text-blue-600">
+          StudyFlow
+        </div>
 
-        <div className="nav-links">
-          <a href="#dashboard">Dashboard</a>
-          <a href="#subjects">Subjects</a>
-          <a href="#tasks">Tasks</a>
+        <div className="flex gap-8">
+          <a
+            href="#dashboard"
+            className="font-medium text-gray-600 transition hover:text-blue-600"
+          >
+            Dashboard
+          </a>
+
+          <a
+            href="#subjects"
+            className="font-medium text-gray-600 transition hover:text-blue-600"
+          >
+            Subjects
+          </a>
+
+          <a
+            href="#tasks"
+            className="font-medium text-gray-600 transition hover:text-blue-600"
+          >
+            Tasks
+          </a>
         </div>
       </nav>
 
-      <main>
 
-        <section className="hero" id="dashboard">
-          <div>
-            <p className="small-title">STUDENT DASHBOARD</p>
+      {/* ==================== HERO ==================== */}
+      <section
+        id="dashboard"
+        className="bg-gray-50 px-8 py-20 text-center"
+      >
+        <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-blue-600">
+          Student Dashboard
+        </p>
 
-            <h1>
-              Learn smarter.
-              <br />
-              Build better.
-            </h1>
+        <h1 className="text-5xl font-bold leading-tight text-blue-600">
+          Learn smarter.
+          <br />
+          Build better.
+        </h1>
 
-            <p className="hero-text">
-              Organize your subjects, track your tasks,
-              and stay focused on your goals.
+        <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600">
+          Organize your subjects, track your tasks, and stay focused on your
+          goals.
+        </p>
+
+        <a
+          href="#tasks"
+          className="mt-8 inline-block rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700"
+        >
+          View My Tasks
+        </a>
+      </section>
+
+
+      {/* ==================== SUBJECTS ==================== */}
+      <section
+        id="subjects"
+        className="bg-white px-8 py-20"
+      >
+        <div className="mx-auto max-w-6xl">
+
+          <div className="mb-12">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-blue-600">
+              My Subjects
             </p>
 
-            <button
-              onClick={() =>
-                document
-                  .getElementById("tasks")
-                  .scrollIntoView({ behavior: "smooth" })
-              }
+            <h2 className="text-3xl font-bold text-gray-900">
+              Current Subjects
+            </h2>
+          </div>
+
+
+          <div className="grid gap-6 md:grid-cols-3">
+
+            {/* React Development */}
+            <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+              <span className="text-sm font-bold text-blue-600">
+                01
+              </span>
+
+              <h3 className="mt-4 text-xl font-bold text-gray-900">
+                React Development
+              </h3>
+
+              <p className="mt-3 leading-relaxed text-gray-600">
+                Learn components, JSX, props, state, and modern frontend
+                development.
+              </p>
+            </div>
+
+
+            {/* Data Analytics */}
+            <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+              <span className="text-sm font-bold text-blue-600">
+                02
+              </span>
+
+              <h3 className="mt-4 text-xl font-bold text-gray-900">
+                Data Analytics
+              </h3>
+
+              <p className="mt-3 leading-relaxed text-gray-600">
+                Explore data cleaning, analysis, visualization, and statistics.
+              </p>
+            </div>
+
+
+            {/* Cybersecurity */}
+            <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+              <span className="text-sm font-bold text-blue-600">
+                03
+              </span>
+
+              <h3 className="mt-4 text-xl font-bold text-gray-900">
+                Cybersecurity
+              </h3>
+
+              <p className="mt-3 leading-relaxed text-gray-600">
+                Understand cybersecurity concepts, threats, protection, and
+                security practices.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+
+     {/* ==================== TASKS ==================== */}
+<section
+  id="tasks"
+  className="bg-gray-50 px-8 py-20"
+>
+  <div className="mx-auto max-w-4xl">
+
+    {/* Section Heading */}
+    <div className="mb-10">
+      <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-blue-600">
+        My Tasks
+      </p>
+
+      <h2 className="text-3xl font-bold text-gray-900">
+        Study Checklist
+      </h2>
+    </div>
+
+
+        {/* Add Task */}
+        <div className="mb-8 flex flex-col gap-3 sm:flex-row">
+          <input
+            type="text"
+            placeholder="Add a new task..."
+            value={newTask}
+            onChange={(event) => setNewTask(event.target.value)}
+            onKeyDown={handleKeyDown}
+            className="flex-1 rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+          />
+
+          <button
+            onClick={addTask}
+            className="rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700"
+          >
+            Add Task
+          </button>
+        </div>
+
+
+        {/* Task List */}
+        <div className="space-y-3">
+          {tasks.map((task, index) => (
+            <div
+              className="flex items-center rounded-xl border border-gray-200 bg-white px-5 py-4 shadow-sm transition hover:shadow-md"
+              key={index}
             >
-              View My Tasks
-            </button>
-          </div>
-        </section>
-
-        <section className="subjects" id="subjects">
-
-          <div className="section-heading">
-            <p className="small-title">MY SUBJECTS</p>
-            <h2>Current Subjects</h2>
-          </div>
-
-          <div className="subject-grid">
-
-            <div className="subject-card">
-              <span>01</span>
-              <h3>React Development</h3>
-              <p>
-                Learn components, JSX, props,
-                state, and modern frontend development.
-              </p>
+              <span className="text-gray-700">
+                {task}
+              </span>
             </div>
+          ))}
+        </div>
 
-            <div className="subject-card">
-              <span>02</span>
-              <h3>Data Analytics</h3>
-              <p>
-                Explore data cleaning, analysis,
-                visualization, and statistics.
-              </p>
-            </div>
+      </div>
+    </section>
 
-            <div className="subject-card">
-              <span>03</span>
-              <h3>Cybersecurity</h3>
-              <p>
-                Understand security principles,
-                threats, and defensive techniques.
-              </p>
-            </div>
 
-          </div>
+          <footer className="border-t border-gray-200 bg-white px-8 py-8 text-center">
+        <p className="font-semibold text-gray-900">
+          StudyFlow © 2026
+        </p>
 
-        </section>
-
-        <section className="tasks" id="tasks">
-
-          <div className="section-heading">
-            <p className="small-title">TO-DO LIST</p>
-            <h2>Today's Tasks</h2>
-          </div>
-
-          <div className="task-input">
-
-            <input
-              type="text"
-              placeholder="Enter a new task..."
-              value={newTask}
-              onChange={(event) => setNewTask(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                  addTask();
-                }
-              }}
-            />
-
-            <button onClick={addTask}>
-              Add Task
-            </button>
-
-          </div>
-
-          <div className="task-list">
-
-            {tasks.map((task, index) => (
-              <div className="task" key={index}>
-                <span className="task-number">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-
-                <p>{task}</p>
-              </div>
-            ))}
-
-          </div>
-
-        </section>
-
-      </main>
-
-      <footer>
-        <p>StudyFlow © 2026</p>
-        <p>Built with React.js + CSS</p>
+        
       </footer>
 
     </div>
