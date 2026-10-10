@@ -1,27 +1,11 @@
 import { useState } from "react";
-
+import { getInitialTasks, createTask } from "./models/Task";
 function App() {
   // =========================
   // TASK STATE
   // =========================
 
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      text: "Review React fundamentals",
-      completed: false,
-    },
-    {
-      id: 2,
-      text: "Finish Data Analytics activity",
-      completed: false,
-    },
-    {
-      id: 3,
-      text: "Study JavaScript",
-      completed: false,
-    },
-  ]);
+  const [tasks, setTasks] = useState(getInitialTasks);
 
   const [newTask, setNewTask] = useState("");
 
@@ -49,11 +33,10 @@ function App() {
   const addTask = () => {
     if (newTask.trim() === "") return;
 
-    const newTaskItem = {
-      id: Date.now(),
-      text: newTask.trim(),
-      completed: false,
-    };
+      const newTaskItem = createTask(
+      Date.now(),
+      newTask.trim()
+    );
 
     setTasks([...tasks, newTaskItem]);
     setNewTask("");
